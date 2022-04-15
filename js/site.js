@@ -10,12 +10,11 @@ function getValues() {
     loanData.amount = parseFloat(document.getElementById("loanAmount").value);
     loanData.term = parseInt(document.getElementById("loanTerms").value);
     loanData.rate = parseFloat(document.getElementById("loanRate").value);
-    console.log(loanData.amount);
 
 
-    let calculatedLoan = calculateLoanTotal(loanData);
+    const calculatedLoan = calculateLoanTotal(loanData);
 
-    displayLoanData(calculatedLoan);
+    displayLoanData(calculatedLoan, loanData);
     //call buildSchedule
     //buildSchedule();
 
@@ -25,65 +24,73 @@ function getValues() {
 //Logic Layer
 function calculateLoanTotal(loanData) {
 
-    loanData.remainingBalance = loanData.amount;
+    let totalMonthlyPayment = 0;
+    let interestPayment = 0;
+    let principalPayment = 0;
+    let remainingBalance = loanData.amount;
+    let totalInterest = 0;
 
-    loanData.totaInterest = 0
+    const loanDataArray = [];
 
-    for (let index = loanData.term; index >= 1; index--) {
+    for (let index = 0; index < loanData.term; index++) {
 
+        totalMonthlyPayment = (loanData.amount * (loanData.rate / 1200)) / [(1 - (1 + loanData.rate / 1200) ** (-loanData.term))];
 
-        loanData.totalMonthlyPayment = (loanData.remainingBalance * (loanData.rate / 1200)) / (1 - (1 + loanData.rate / 1200) ** -index);
+        interestPayment = remainingBalance * loanData.rate / 1200;
 
-        loanData.interestPayment = loanData.remainingBalance * loanData.rate / 1200;
+        principalPayment = totalMonthlyPayment - interestPayment;
 
-        loanData.principalPayment = loanData.totalMonthlyPayment - loanData.interestPayment;
+        remainingBalance -= principalPayment;
 
-        loanData.remainingBalance -= loanData.totalMonthlyPayment;
+        totalInterest += interestPayment;
 
-        loanData.totaInterest += loanData.interestPayment;
-
-        let loanTable = document.getElementById("paymentData-table");
-
-        let paymentDataRow = loanTable.insertRow(loanData.term - index + 1);
-
-
-        let columnMonths = paymentDataRow.insertCell(0);
-        columnMonths.innerHTML = loanData.term - index + 1;
-
-        let columnPayment = paymentDataRow.insertCell(1);
-        columnPayment.innerHTML = loanData.totalMonthlyPayment;
-
-        let columnPrincipal = paymentDataRow.insertCell(2);
-        columnPrincipal.innerHTML = loanData.principalPayment;
-
-        let columnInterest = paymentDataRow.insertCell(3);
-        columnInterest.innerHTML = loanData.interestPayment;
-
-        let columnTotalInterest = paymentDataRow.insertCell(4);
-        columnTotalInterest.innerHTML = loanData.totaInterest;
-
-        let columnBalance = paymentDataRow.insertCell(5);
-        columnBalance.innerHTML = loanData.remainingBalance;
-
-        // loanTableRow.childNodes[0].innerHTML = loanData.term - index + 1;
-        // loanTableRow.childNodes[1].innerHTML = loanData.totalMonthlyPayment;
-        // loanTableRow.childNodes[2].innerHTML = loanData.principalPayment;
-        // loanTableRow.childNodes[3].innerHTML = loanData.interestPayment;
-        // loanTableRow.childNodes[4].innerHTML = loanData.totaInterest;
-        // loanTableRow.childNodes[5].innerHTML = loanData.remainingBalance;
-
+        loanDataArray.push({
+            'totalMonthlyPayment': totalMonthlyPayment.toFixed(2),
+            'interestPayment': interestPayment.toFixed(2),
+            'principalPayment': principalPayment.toFixed(2),
+            'totalInterest': totalInterest.toFixed(2),
+            'remainingBalance': remainingBalance.toFixed(2),
+        });
     }
 
-    // console.log(loanData.totalMonthlyPayment);
-    console.log(loanData);
-    return loanData;
+    return loanDataArray;
 }
 
-function displayLoanData(loanData) {
-    document.getElementById("totalPrincipal").innerHTML = loanData.amount;
-    document.getElementById("totalInterest").innerHTML = loanData.amount;
-    document.getElementById("totalCost").innerHTML = loanData.amount;
-    document.getElementById("totalMonthlyPayment").innerHTML = loanData.totalMonthlyPayment;
+function displayLoanData(loanDataArray, loanData) {
+
+    let totalCost = loanData.amount + parseFloat(loanDataArray[loanData.term - 1].totalInterest);
+
+    document.getElementById("totalPrincipal").innerHTML = '$' + loanData.amount;
+    document.getElementById("totalInterest").innerHTML = '$' + loanDataArray[loanData.term - 1].totalInterest;
+    document.getElementById("totalCost").innerHTML = '$' + totalCost;
+    document.getElementById("totalMonthlyPayment").innerHTML = '$' + loanDataArray[0].totalMonthlyPayment;
+
+    let loanTable = document.getElementById("paymentBody");
+
+    loanDataArray.forEach((element, index) => {
+
+        let paymentDataRow = loanTable.insertRow(index);
+
+        let columnMonths = paymentDataRow.insertCell(0);
+        columnMonths.innerHTML = index + 1;
+
+        let columnPayment = paymentDataRow.insertCell(1);
+        columnPayment.innerHTML = element.totalMonthlyPayment;
+
+        let columnPrincipal = paymentDataRow.insertCell(2);
+        columnPrincipal.innerHTML = element.principalPayment;
+
+        let columnInterest = paymentDataRow.insertCell(3);
+        columnInterest.innerHTML = element.interestPayment;
+
+        let columnTotalInterest = paymentDataRow.insertCell(4);
+        columnTotalInterest.innerHTML = element.totalInterest;
+
+        let columnBalance = paymentDataRow.insertCell(5);
+        columnBalance.innerHTML = element.remainingBalance;
+
+        // console.log(element);
+    });
 }
 // //builds ammortization schedule
 // function buildSchedule(amount, rate, term, payment) {
