@@ -91,9 +91,9 @@
                             <input id="loanRate" type="number" class="form-control" placeholder="Interest Rate"
                                 value="3" required>
                         </div>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-primary">Clear</button>
-                            <button type="button" class="btn btn-primary" onclick="getValues()">Calculate</button>
+                        <div class="text-end py-3">
+                            <button type="button" class="btn btn-outline-primary btn-lg"
+                                onclick="getValues()">Calculate</button>
                         </div>
                     </form>
                     <!-- End of input form -->
@@ -101,8 +101,8 @@
 
                 </div>
                 <div class="col-12 col-md-6 border">
-                    <h2>Your Monthly Payments</h2>
-                    <h1 class="fw-bold">$222.22</h1>
+                    <h2 class="text-center">Your Monthly Payments</h2>
+                    <h1 class="fw-bold text-center" id="totalMonthlyPayment">$222.22</h1>
                     <br>
                     <div class="row-cols d-flex justify-content-between">
                         <h4>Total Principal</h4>
@@ -116,29 +116,26 @@
                         <h4>Total Cost</h4>
                         <h4 id="totalCost"></h4>
                     </div>
-                    <div class="row-cols d-flex justify-content-between">
-                        <h4>Total Monthly</h4>
-                        <h4 id="totalMonthlyPayment"></h4>
-                    </div>
                 </div>
             </div>
+            <div class="row">
+                <table class="table table-striped" id="paymentData-table">
+                    <thead class="paymentBody-color text-light">
+                        <tr>
+                            <th>Month</th>
+                            <th>Payment</th>
+                            <th>Principal</th>
+                            <th>Interest</th>
+                            <th>Total Interest</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-striped" id="paymentBody">
+                        <!-- Data Goes Here -->
 
-            <table class="table" id="paymentData-table">
-                <thead>
-                    <tr>
-                        <th>Month</th>
-                        <th>Payment</th>
-                        <th>Principal</th>
-                        <th>Interest</th>
-                        <th>Total Interest</th>
-                        <th>Balance</th>
-                    </tr>
-                </thead>
-                <tbody id="paymentBody">
-                    <!-- Data Goes Here -->
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
     </main>
 
     <footer class="footer mt-auto py-3 bg-dark sticky-footer text-light">
