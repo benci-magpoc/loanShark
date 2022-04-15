@@ -86,6 +86,10 @@ footer img:hover {
     font-size: 1rem;
 }
 
+.paymentBody-color {
+    background-color: #033863;
+}
+
 @media (min-width: 575.98px) {
     .techIcons {
         font-size: 5rem;
