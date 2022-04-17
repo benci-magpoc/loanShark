@@ -11,17 +11,15 @@ function getValues() {
     loanData.term = parseInt(document.getElementById("loanTerms").value);
     loanData.rate = parseFloat(document.getElementById("loanRate").value);
 
-
+    //calls calculatedLoanTotal to calculate the schedule
     const calculatedLoan = calculateLoanTotal(loanData);
-
+    //calls displayLoanData passing calculatedLoan values
     displayLoanData(calculatedLoan, loanData);
-    //call buildSchedule
-    //buildSchedule();
-
-    //displayData();
 }
 
-//Logic Layer
+//This function receives the parameter object of loanData which 
+//to be calculated and passed as an array of object that has a 
+//length equivalent to the terms of the loan so it can be looped through for output.
 function calculateLoanTotal(loanData) {
 
     let totalMonthlyPayment = 0;
@@ -56,6 +54,7 @@ function calculateLoanTotal(loanData) {
     return loanDataArray;
 }
 
+//displays ammortization schedule on the page through a table 
 function displayLoanData(loanDataArray, loanData) {
 
     let totalCost = loanData.amount + parseFloat(loanDataArray[loanData.term - 1].totalInterest);
@@ -65,12 +64,15 @@ function displayLoanData(loanDataArray, loanData) {
     document.getElementById("totalCost").innerHTML = '$' + totalCost;
     document.getElementById("totalMonthlyPayment").innerHTML = '$' + loanDataArray[0].totalMonthlyPayment;
 
+    //loanTable is assigned the body of the table so the rows can be displayed
     let loanTable = document.getElementById("paymentBody");
 
+    //loops through the array to assign values to rows of the table
     loanDataArray.forEach((element, index) => {
 
+        //insertRow method is called to prepare the row to be inserted with data
         let paymentDataRow = loanTable.insertRow(index);
-
+        //insertCell method is used to display values to the column of the index
         let columnMonths = paymentDataRow.insertCell(0);
         columnMonths.innerHTML = index + 1;
 
@@ -89,16 +91,5 @@ function displayLoanData(loanDataArray, loanData) {
         let columnBalance = paymentDataRow.insertCell(5);
         columnBalance.innerHTML = element.remainingBalance;
 
-        // console.log(element);
     });
 }
-// //builds ammortization schedule
-// function buildSchedule(amount, rate, term, payment) {
-//     //return array of payment objects
-// }
-
-// //display table of payments
-// //and summary info at the top of the page
-// function displayData() {
-
-// }
