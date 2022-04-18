@@ -1,5 +1,7 @@
 //get the loans from page
 function getValues() {
+    //clear out the table display
+    document.getElementById("paymentBody").innerHTML = "";
 
     let loanData = {
         amount: 0.00,
@@ -7,14 +9,27 @@ function getValues() {
         rate: 0
     };
 
-    loanData.amount = parseFloat(document.getElementById("loanAmount").value);
-    loanData.term = parseInt(document.getElementById("loanTerms").value);
-    loanData.rate = parseFloat(document.getElementById("loanRate").value);
+    if (isNaN(loanData.amount)) {
+        alert("Enter a valid amount. Must be a number!");
+        document.getElementById("loanAmount").focus();
+    } else if (isNaN(loanData.term)) {
+        alert("Enter a valid term. Must be a number!");
+        document.getElementById("loanTerms").focus();
+    }
+    if (isNaN(loanData.amount)) {
+        alert("Enter a valid rate. Must be a number!");
+        document.getElementById("loanRate").focus();
+    } else {
 
-    //calls calculatedLoanTotal to calculate the schedule
-    const calculatedLoan = calculateLoanTotal(loanData);
-    //calls displayLoanData passing calculatedLoan values
-    displayLoanData(calculatedLoan, loanData);
+        loanData.amount = parseFloat(document.getElementById("loanAmount").value);
+        loanData.term = parseInt(document.getElementById("loanTerms").value);
+        loanData.rate = parseFloat(document.getElementById("loanRate").value);
+
+        //calls calculatedLoanTotal to calculate the schedule
+        const calculatedLoan = calculateLoanTotal(loanData);
+        //calls displayLoanData passing calculatedLoan values
+        displayLoanData(calculatedLoan, loanData);
+    }
 }
 
 //This function receives the parameter object of loanData which 
@@ -50,7 +65,6 @@ function calculateLoanTotal(loanData) {
             'remainingBalance': remainingBalance.toFixed(2),
         });
     }
-
     return loanDataArray;
 }
 
