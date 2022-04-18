@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>APP NAME: Coding Challenge by Benci Magpoc</title>
+    <title>APP NAME: Loan Shark</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -42,7 +42,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="./index.html">
                 <span><img src="/img/portfolioLogoLight.png" height="25" alt=""></span>
-                APP NAME
+                Loan Shark
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,13 +72,15 @@
 
     <main class="flex-shrink-0 py-3">
         <div class="container mt-5">
-            <h1>THE CODE FOR:</h1>
+            <h1>THE CODE FOR: Loan Shark</h1>
             <div class="row">
                 <div class="col-12 col-lg-8">
                     <pre class="line-numbers">
                         <code class="language-javascript">
                             //get the loans from page
                             function getValues() {
+                                //clear out the table display
+                                document.getElementById("paymentBody").innerHTML = "";
                             
                                 let loanData = {
                                     amount: 0.00,
@@ -86,14 +88,27 @@
                                     rate: 0
                                 };
                             
-                                loanData.amount = parseFloat(document.getElementById("loanAmount").value);
-                                loanData.term = parseInt(document.getElementById("loanTerms").value);
-                                loanData.rate = parseFloat(document.getElementById("loanRate").value);
+                                if (isNaN(loanData.amount)) {
+                                    alert("Enter a valid amount. Must be a number!");
+                                    document.getElementById("loanAmount").focus();
+                                } else if (isNaN(loanData.term)) {
+                                    alert("Enter a valid term. Must be a number!");
+                                    document.getElementById("loanTerms").focus();
+                                }
+                                if (isNaN(loanData.amount)) {
+                                    alert("Enter a valid rate. Must be a number!");
+                                    document.getElementById("loanRate").focus();
+                                } else {
                             
-                                //calls calculatedLoanTotal to calculate the schedule
-                                const calculatedLoan = calculateLoanTotal(loanData);
-                                //calls displayLoanData passing calculatedLoan values
-                                displayLoanData(calculatedLoan, loanData);
+                                    loanData.amount = parseFloat(document.getElementById("loanAmount").value);
+                                    loanData.term = parseInt(document.getElementById("loanTerms").value);
+                                    loanData.rate = parseFloat(document.getElementById("loanRate").value);
+                            
+                                    //calls calculatedLoanTotal to calculate the schedule
+                                    const calculatedLoan = calculateLoanTotal(loanData);
+                                    //calls displayLoanData passing calculatedLoan values
+                                    displayLoanData(calculatedLoan, loanData);
+                                }
                             }
                             
                             //This function receives the parameter object of loanData which 
@@ -129,7 +144,6 @@
                                         'remainingBalance': remainingBalance.toFixed(2),
                                     });
                                 }
-                            
                                 return loanDataArray;
                             }
                             
