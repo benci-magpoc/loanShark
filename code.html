@@ -165,25 +165,14 @@
                             
                                     //insertRow method is called to prepare the row to be inserted with data
                                     let paymentDataRow = loanTable.insertRow(index);
+                            
                                     //insertCell method is used to display values to the column of the index
-                                    let columnMonths = paymentDataRow.insertCell(0);
-                                    columnMonths.innerHTML = index + 1;
-                            
-                                    let columnPayment = paymentDataRow.insertCell(1);
-                                    columnPayment.innerHTML = element.totalMonthlyPayment;
-                            
-                                    let columnPrincipal = paymentDataRow.insertCell(2);
-                                    columnPrincipal.innerHTML = element.principalPayment;
-                            
-                                    let columnInterest = paymentDataRow.insertCell(3);
-                                    columnInterest.innerHTML = element.interestPayment;
-                            
-                                    let columnTotalInterest = paymentDataRow.insertCell(4);
-                                    columnTotalInterest.innerHTML = element.totalInterest;
-                            
-                                    let columnBalance = paymentDataRow.insertCell(5);
-                                    columnBalance.innerHTML = element.remainingBalance;
-                            
+                                    paymentDataRow.insertCell(0).innerHTML = index + 1;;
+                                    paymentDataRow.insertCell(1).innerHTML = element.totalMonthlyPayment;
+                                    paymentDataRow.insertCell(2).innerHTML = element.principalPayment;
+                                    paymentDataRow.insertCell(3).innerHTML = element.interestPayment;
+                                    paymentDataRow.insertCell(4).innerHTML = element.totalInterest;
+                                    paymentDataRow.insertCell(5).innerHTML = element.remainingBalance;
                                 });
                             }
                         </code>
