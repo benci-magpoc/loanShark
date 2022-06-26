@@ -90,6 +90,8 @@ footer img:hover {
     background-color: #033863;
 }
 
+#content>p {}
+
 @media (min-width: 575.98px) {
     .techIcons {
         font-size: 5rem;
